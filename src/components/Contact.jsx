@@ -13,13 +13,13 @@ const Contact = () => {
                 viewport={{ once: true }}
                 className="text-center relative z-10"
             >
-                <h2 className="text-7xl md:text-9xl font-display font-black text-white mb-8 uppercase tracking-tighter glitch-text" data-text="TRANSMIT">
+                <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-display font-black text-white mb-8 uppercase tracking-tighter glitch-text" data-text="TRANSMIT">
                     Let's Connect
                 </h2>
-                <div className="relative inline-block group">
+                <div className="relative inline-block group max-w-full px-4 md:px-0">
                     <a
                         href="mailto:sidreddy.onwork@gmail.com"
-                        className="text-2xl md:text-4xl font-mono text-[#f3ec19] hover:text-white transition-all duration-300 tracking-widest uppercase pb-2 neon-glow-yellow"
+                        className="text-base sm:text-xl md:text-3xl lg:text-4xl font-mono text-[#f3ec19] hover:text-white transition-all duration-300 tracking-wider md:tracking-widest uppercase pb-2 neon-glow-yellow break-all sm:break-normal inline-block"
                     >
                         sidreddy.onwork@gmail.com
                     </a>
@@ -27,7 +27,7 @@ const Contact = () => {
                 </div>
             </motion.div>
 
-            <div className="mt-24 flex gap-12 relative z-10">
+            <div className="mt-12 md:mt-24 flex flex-col sm:flex-row gap-6 sm:gap-12 relative z-10">
                 {[
                     { name: 'Instagram', url: 'https://www.instagram.com/sid_rdy/' },
                     { name: 'LinkedIn', url: 'https://www.linkedin.com/in/the-siddharth-reddy/' },

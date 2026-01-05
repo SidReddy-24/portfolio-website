@@ -21,6 +21,98 @@ const Admin = ({ projects, setProjects, hobbies, setHobbies, about, setAbout }) 
         setAbout(newData);
     };
 
+    // Multi-proxy fetching helper
+    const fetchWithProxies = async (url) => {
+        const proxies = [
+            `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+            `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        ];
+
+        let lastError = null;
+        for (const proxyUrl of proxies) {
+            try {
+                const res = await fetch(proxyUrl);
+                if (!res.ok) throw new Error(`Proxy returned ${res.status}`);
+
+                // Handle different proxy response formats
+                const data = await res.json();
+                return data.contents || data; // allorigins uses .contents, others may differ
+            } catch (err) {
+                lastError = err;
+                continue; // Try next proxy
+            }
+        }
+        throw new Error(`All proxies failed: ${lastError?.message || 'Unknown error'}`);
+    };
+
+    // Enhanced metadata extraction with multiple strategies
+    const extractMetadata = (html, url) => {
+        const strategies = [
+            // Strategy 1: Open Graph tags
+            () => {
+                const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/);
+                const descMatch = html.match(/<meta property="og:description" content="([^"]+)"/);
+                const photoMatch = html.match(/<meta property="og:image" content="([^"]+)"/);
+
+                if (titleMatch) {
+                    return {
+                        title: titleMatch[1].split(' | ')[0],
+                        description: descMatch ? descMatch[1].substring(0, 100) + "..." : null,
+                        photo: photoMatch ? photoMatch[1] : null
+                    };
+                }
+                return null;
+            },
+            // Strategy 2: Twitter Card tags
+            () => {
+                const titleMatch = html.match(/<meta name="twitter:title" content="([^"]+)"/);
+                const descMatch = html.match(/<meta name="twitter:description" content="([^"]+)"/);
+                const photoMatch = html.match(/<meta name="twitter:image" content="([^"]+)"/);
+
+                if (titleMatch) {
+                    return {
+                        title: titleMatch[1],
+                        description: descMatch ? descMatch[1].substring(0, 100) + "..." : null,
+                        photo: photoMatch ? photoMatch[1] : null
+                    };
+                }
+                return null;
+            },
+            // Strategy 3: JSON-LD structured data
+            () => {
+                const jsonLdMatch = html.match(/<script type="application\/ld\+json">(.+?)<\/script>/s);
+                if (jsonLdMatch) {
+                    try {
+                        const data = JSON.parse(jsonLdMatch[1]);
+                        if (data.headline || data.name) {
+                            return {
+                                title: data.headline || data.name,
+                                description: data.description?.substring(0, 100) + "..." || null,
+                                photo: data.image?.url || data.image || null
+                            };
+                        }
+                    } catch (e) {
+                        // JSON parsing failed, continue to next strategy
+                    }
+                }
+                return null;
+            }
+        ];
+
+        // Try each strategy until one succeeds
+        for (const strategy of strategies) {
+            const result = strategy();
+            if (result) return result;
+        }
+
+        // All strategies failed - return minimal data
+        return {
+            title: 'LinkedIn Post',
+            description: 'Metadata extraction failed. Please edit manually.',
+            photo: null
+        };
+    };
+
     const fetchData = async () => {
         if (!inputUrl) return;
         setIsLoading(true);
@@ -45,21 +137,29 @@ const Admin = ({ projects, setProjects, hobbies, setHobbies, about, setAbout }) 
                 };
                 setProjects([newNode, ...projects]);
             } else {
-                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(inputUrl)}`);
-                const result = await res.json();
-                const html = result.contents;
+                // Enhanced LinkedIn fetching with multi-proxy and fallback
+                try {
+                    const html = await fetchWithProxies(inputUrl);
+                    const metadata = extractMetadata(html, inputUrl);
 
-                const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/);
-                const descMatch = html.match(/<meta property="og:description" content="([^"]+)"/);
-                const photoMatch = html.match(/<meta property="og:image" content="([^"]+)"/);
-
-                newNode = {
-                    title: titleMatch ? titleMatch[1].split(' | ')[0] : 'LinkedIn Post',
-                    description: descMatch ? descMatch[1].substring(0, 100) + "..." : 'Personal achievement uploaded via LinkedIn node.',
-                    photo: photoMatch ? photoMatch[1] : null,
-                    date: new Date().toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' }).replace('/', '.'),
-                    url: inputUrl
-                };
+                    newNode = {
+                        title: metadata.title,
+                        description: metadata.description || 'Personal achievement uploaded via LinkedIn node.',
+                        photo: metadata.photo,
+                        date: new Date().toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' }).replace('/', '.'),
+                        url: inputUrl
+                    };
+                } catch (fetchError) {
+                    // Graceful degradation: create node with URL for manual editing
+                    setError(`METADATA_EXTRACTION_FAILED // ${fetchError.message} // Manual Override Required`);
+                    newNode = {
+                        title: `LinkedIn Post - ${new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`,
+                        description: 'Click to edit and add details manually.',
+                        photo: null,
+                        date: new Date().toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' }).replace('/', '.'),
+                        url: inputUrl
+                    };
+                }
                 setHobbies([newNode, ...hobbies]);
             }
             setInputUrl('');

@@ -15,25 +15,29 @@ const INITIAL_PROJECTS = [
     title: 'Immersive Scapes',
     category: 'WebGL Experiment',
     year: '2025',
-    color: 'bg-red-500'
+    color: 'bg-red-500',
+    url: 'https://github.com/example/immersive-scapes'
   },
   {
     title: 'Neon Drift',
     category: 'Brand Identity',
     year: '2024',
-    color: 'bg-blue-500'
+    color: 'bg-blue-500',
+    url: 'https://github.com/example/neon-drift'
   },
   {
     title: 'Future Corp',
     category: 'Web Design',
     year: '2024',
-    color: 'bg-green-500'
+    color: 'bg-green-500',
+    url: 'https://github.com/example/future-corp'
   },
   {
     title: 'Echo Systems',
     category: 'Development',
     year: '2023',
-    color: 'bg-purple-500'
+    color: 'bg-purple-500',
+    url: 'https://github.com/example/echo-systems'
   }
 ];
 

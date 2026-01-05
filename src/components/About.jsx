@@ -16,14 +16,14 @@ const About = ({ about }) => {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-6xl md:text-8xl font-display font-black text-white mb-8 uppercase tracking-tighter glitch-text" data-text="ABOUT SYSTEM">
+                        <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black text-white mb-8 uppercase tracking-tighter glitch-text" data-text="ABOUT SYSTEM">
                             About System
                         </h2>
-                        <p className="text-xl text-[#f3ec19]/80 font-mono tracking-tight leading-relaxed mb-6">
+                        <p className="text-base sm:text-lg md:text-xl text-[#f3ec19]/80 font-mono tracking-tight leading-relaxed mb-6">
                             // USER_BIO_INITIATED
                             {about.bio}
                         </p>
-                        <p className="text-lg text-gray-400 font-light leading-relaxed">
+                        <p className="text-sm sm:text-base md:text-lg text-gray-400 font-light leading-relaxed">
                             {about.description}
                         </p>
                     </motion.div>
@@ -33,7 +33,7 @@ const About = ({ about }) => {
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                         viewport={{ once: true }}
-                        className="bg-[#f3ec19]/5 p-10 relative border-l-2 border-[#ff00ff] shadow-[inset_0_0_20px_rgba(255,0,255,0.05)]"
+                        className="bg-[#f3ec19]/5 p-6 md:p-10 relative border-l-2 border-[#ff00ff] shadow-[inset_0_0_20px_rgba(255,0,255,0.05)]"
                     >
                         {/* HUD corner marks */}
                         <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#f3ec19]/40" />
