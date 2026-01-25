@@ -36,7 +36,8 @@ function App() {
   useEffect(() => {
     // Assuming backend is running on default port or configured URL. 
     // In production, this should be an environment variable.
-    const newSocket = io('http://localhost:3000');
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+    const newSocket = io(backendUrl);
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
