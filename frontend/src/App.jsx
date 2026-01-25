@@ -37,11 +37,20 @@ function App() {
     // Assuming backend is running on default port or configured URL. 
     // In production, this should be an environment variable.
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
-    const newSocket = io(backendUrl);
+    console.log("DEBUG: Attempting to connect to:", backendUrl);
+
+    const newSocket = io(backendUrl, {
+      transports: ['websocket', 'polling'],
+      withCredentials: false
+    });
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
-      console.log('Connected to backend');
+      console.log('DEBUG: Connected to backend successfully with ID:', newSocket.id);
+    });
+
+    newSocket.on('connect_error', (err) => {
+      console.error('DEBUG: Connection error:', err.message);
     });
 
     newSocket.on('init_data', (data) => {
@@ -50,24 +59,36 @@ function App() {
       setAbout(data.about);
     });
 
-    newSocket.on('sync_projects', (data) => setProjects(data));
-    newSocket.on('sync_hobbies', (data) => setHobbies(data));
-    newSocket.on('sync_about', (data) => setAbout(data));
+    newSocket.on('sync_projects', (data) => {
+      console.log('Frontend: Received sync_projects', data);
+      setProjects(data);
+    });
+    newSocket.on('sync_hobbies', (data) => {
+      console.log('Frontend: Received sync_hobbies', data);
+      setHobbies(data);
+    });
+    newSocket.on('sync_about', (data) => {
+      console.log('Frontend: Received sync_about', data);
+      setAbout(data);
+    });
 
     return () => newSocket.close();
   }, []);
 
   const handleProjectsUpdate = (newProjects) => {
+    console.log('Frontend: Emitting update_projects', newProjects);
     setProjects(newProjects);
     socket?.emit('update_projects', newProjects);
   };
 
   const handleHobbiesUpdate = (newHobbies) => {
+    console.log('Frontend: Emitting update_hobbies', newHobbies);
     setHobbies(newHobbies);
     socket?.emit('update_hobbies', newHobbies);
   };
 
   const handleAboutUpdate = (newAbout) => {
+    console.log('Frontend: Emitting update_about', newAbout);
     setAbout(newAbout);
     socket?.emit('update_about', newAbout);
   };

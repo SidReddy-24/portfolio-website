@@ -69,18 +69,24 @@ io.on('connection', (socket) => {
 
   // Handle updates from Admin
   socket.on('update_projects', (newProjects) => {
+    console.log('Received update_projects', newProjects.length);
     projects = newProjects;
     io.emit('sync_projects', projects); // Broadcast to all clients
+    console.log('Broadcasted sync_projects');
   });
 
   socket.on('update_hobbies', (newHobbies) => {
+    console.log('Received update_hobbies', newHobbies.length);
     hobbies = newHobbies;
     io.emit('sync_hobbies', hobbies);
+    console.log('Broadcasted sync_hobbies');
   });
 
   socket.on('update_about', (newAbout) => {
+    console.log('Received update_about', newAbout.bio?.substring(0, 20));
     about = newAbout;
     io.emit('sync_about', about);
+    console.log('Broadcasted sync_about');
   });
 
   socket.on('disconnect', () => {
