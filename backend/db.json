@@ -1,0 +1,64 @@
+{
+    "projects": [
+        {
+            "title": "Immersive Scapes",
+            "category": "WebGL Experiment",
+            "year": "2025",
+            "color": "bg-red-500",
+            "url": "https://github.com/example/immersive-scapes"
+        },
+        {
+            "title": "Neon Drift",
+            "category": "Brand Identity",
+            "year": "2024",
+            "color": "bg-blue-500",
+            "url": "https://github.com/example/neon-drift"
+        },
+        {
+            "title": "Future Corp",
+            "category": "Web Design",
+            "year": "2024",
+            "color": "bg-green-500",
+            "url": "https://github.com/example/future-corp"
+        },
+        {
+            "title": "Echo Systems",
+            "category": "Development",
+            "year": "2023",
+            "color": "bg-purple-500",
+            "url": "https://github.com/example/echo-systems"
+        }
+    ],
+    "hobbies": [
+        {
+            "title": "GLSL Shaders",
+            "date": "01.2025"
+        },
+        {
+            "title": "Canvas Physics",
+            "date": "12.2024"
+        },
+        {
+            "title": "React Fiber",
+            "date": "11.2024"
+        },
+        {
+            "title": "Generative Art",
+            "date": "10.2024"
+        }
+    ],
+    "about": {
+        "bio": "I am a creative developer focused on crafting immersive digital experiences where code meets art.",
+        "description": "Specializing in high-fidelity motion and 3D web applications. Every project is an exploration of the boundary between the digital and the physical.",
+        "modules": [
+            "React",
+            "WebGL",
+            "Framer Motion",
+            "Three.js",
+            "Node.js",
+            "Figma"
+        ],
+        "status": "Optimized",
+        "location": "India"
+    }
+}
