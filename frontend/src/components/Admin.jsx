@@ -453,6 +453,10 @@ const Admin = ({ projects, setProjects, hobbies, setHobbies, about, setAbout }) 
                                                         <label className="text-[8px] uppercase tracking-widest opacity-40">Narrative</label>
                                                         <textarea value={editData.description} onChange={(e) => setEditData({ ...editData, description: e.target.value })} rows={4} className="w-full bg-black/50 border border-[#f3ec19]/20 p-3 text-[11px] text-[#f3ec19] outline-none resize-none" />
                                                     </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-[8px] uppercase tracking-widest opacity-40">Node_URL</label>
+                                                        <input value={editData.url || ''} onChange={(e) => setEditData({ ...editData, url: e.target.value })} className="w-full bg-black/50 border border-[#f3ec19]/20 p-3 text-xs text-[#f3ec19] outline-none" />
+                                                    </div>
                                                 </div>
                                             )}
                                             <button onClick={saveEdit} className="w-full py-4 bg-[#f3ec19] text-black font-black uppercase text-xs tracking-widest hover:bg-white transition-all">AUTHORIZE_CHANGES</button>

@@ -24,6 +24,7 @@ const Play = ({ hobbies }) => {
                                     borderColor: "#ff00ff",
                                     backgroundColor: "rgba(255, 0, 255, 0.05)"
                                 }}
+                                onClick={() => item.url && window.open(item.url, '_blank')}
                                 className="aspect-square bg-black border border-[#f3ec19]/10 p-0 flex flex-col items-start justify-between cursor-pointer transition-all duration-500 group relative overflow-hidden"
                                 style={{ minWidth: '300px', width: '300px' }}
                             >
